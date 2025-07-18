@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
+    android:layout_marginStart="8dp"
+    android:layout_marginEnd="8dp"
+    android:layout_marginBottom="8dp"
     app:cardCornerRadius="8dp">
 
     <LinearLayout
@@ -19,13 +21,6 @@
             android:textColor="@color/md_theme_onBackground"
             android:textSize="18sp"
             android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/personYear"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/md_theme_onBackground"
-            android:textSize="14sp" />
 
     </LinearLayout>
 

@@ -33,7 +33,6 @@ public class SavedFiguresAdapter extends RecyclerView.Adapter<SavedFiguresAdapte
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         GeminiResponse figure = figures.get(position);
         holder.personName.setText(figure.getName());
-        holder.personYear.setText(figure.getBirth());
 
         holder.itemView.setOnClickListener(v -> onClickListener.onItemClick(figure));
     }
@@ -45,12 +44,10 @@ public class SavedFiguresAdapter extends RecyclerView.Adapter<SavedFiguresAdapte
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView personName;
-        TextView personYear;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             personName = itemView.findViewById(R.id.personName);
-            personYear = itemView.findViewById(R.id.personYear);
         }
     }
 
