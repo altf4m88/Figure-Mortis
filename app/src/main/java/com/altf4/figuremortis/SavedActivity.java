@@ -2,6 +2,7 @@ package com.altf4.figuremortis;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -27,8 +28,13 @@ public class SavedActivity extends AppCompatActivity implements SavedFiguresAdap
         db = new DatabaseHelper(this);
         List<GeminiResponse> figures = db.getAllFigures();
 
-        SavedFiguresAdapter adapter = new SavedFiguresAdapter(figures, this);
-        recyclerView.setAdapter(adapter);
+        if (figures.isEmpty()) {
+            findViewById(R.id.emptyImage).setVisibility(View.VISIBLE);
+            findViewById(R.id.emptyText).setVisibility(View.VISIBLE);
+        } else {
+            SavedFiguresAdapter adapter = new SavedFiguresAdapter(figures, this);
+            recyclerView.setAdapter(adapter);
+        }
     }
 
     @Override

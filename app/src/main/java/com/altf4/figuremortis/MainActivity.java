@@ -43,6 +43,8 @@ public class MainActivity extends AppCompatActivity implements DeathsAdapter.OnC
 
     private void fetchData() {
         progressBar.setVisibility(View.VISIBLE);
+        findViewById(R.id.loadingImage).setVisibility(View.VISIBLE);
+        findViewById(R.id.loadingText).setVisibility(View.VISIBLE);
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://history.muffinlabs.com/")
@@ -60,6 +62,8 @@ public class MainActivity extends AppCompatActivity implements DeathsAdapter.OnC
             @Override
             public void onResponse(Call<HistoryResponse> call, Response<HistoryResponse> response) {
                 progressBar.setVisibility(View.GONE);
+                findViewById(R.id.loadingImage).setVisibility(View.GONE);
+                findViewById(R.id.loadingText).setVisibility(View.GONE);
                 if (response.isSuccessful() && response.body() != null) {
                     List<Death> deaths = response.body().getData().getDeaths();
                     DeathsAdapter adapter = new DeathsAdapter(deaths, MainActivity.this);
@@ -72,6 +76,8 @@ public class MainActivity extends AppCompatActivity implements DeathsAdapter.OnC
             @Override
             public void onFailure(Call<HistoryResponse> call, Throwable t) {
                 progressBar.setVisibility(View.GONE);
+                findViewById(R.id.loadingImage).setVisibility(View.GONE);
+                findViewById(R.id.loadingText).setVisibility(View.GONE);
                 Toast.makeText(MainActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });

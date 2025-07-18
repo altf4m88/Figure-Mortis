@@ -16,6 +16,7 @@
             android:id="@+id/personName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/md_theme_onBackground"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -23,6 +24,7 @@
             android:id="@+id/personYear"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/md_theme_onBackground"
             android:textSize="14sp" />
 
     </LinearLayout>
