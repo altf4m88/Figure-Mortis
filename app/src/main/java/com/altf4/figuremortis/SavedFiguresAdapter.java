@@ -9,15 +9,16 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.altf4.figuremortis.db.DatabaseHelper;
+import com.altf4.figuremortis.service.GeminiService;
 
 import java.util.List;
 
 public class SavedFiguresAdapter extends RecyclerView.Adapter<SavedFiguresAdapter.ViewHolder> {
 
-    private final List<GeminiResponse> figures;
+    private final List<GeminiService.GroundedResponse> figures;
     private final OnClickListener onClickListener;
 
-    public SavedFiguresAdapter(List<GeminiResponse> figures, OnClickListener onClickListener) {
+    public SavedFiguresAdapter(List<GeminiService.GroundedResponse> figures, OnClickListener onClickListener) {
         this.figures = figures;
         this.onClickListener = onClickListener;
     }
@@ -31,8 +32,8 @@ public class SavedFiguresAdapter extends RecyclerView.Adapter<SavedFiguresAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        GeminiResponse figure = figures.get(position);
-        holder.personName.setText(figure.getName());
+        GeminiService.GroundedResponse figure = figures.get(position);
+        holder.personName.setText(figure.name);
 
         holder.itemView.setOnClickListener(v -> onClickListener.onItemClick(figure));
     }
@@ -52,6 +53,6 @@ public class SavedFiguresAdapter extends RecyclerView.Adapter<SavedFiguresAdapte
     }
 
     public interface OnClickListener {
-        void onItemClick(GeminiResponse figure);
+        void onItemClick(GeminiService.GroundedResponse figure);
     }
 }

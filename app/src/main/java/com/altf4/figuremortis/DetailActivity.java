@@ -11,6 +11,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.altf4.figuremortis.db.DatabaseHelper;
 import com.altf4.figuremortis.service.GeminiService;
+import com.altf4.figuremortis.service.GeminiService.GroundedResponse;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.util.List;
+import java.util.Map;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -31,35 +37,66 @@ public class DetailActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progress_bar_detail);
         btnSave = findViewById(R.id.btn_save);
 
-        String apiKey = BuildConfig.GEMINI_API_KEY;
-        geminiService = new GeminiService(apiKey);
+        geminiService = new GeminiService(BuildConfig.GEMINI_API_KEY);
 
         String personText = getIntent().getStringExtra("PERSON_TEXT");
         String personYear = getIntent().getStringExtra("PERSON_YEAR");
+        String personBirth = getIntent().getStringExtra("PERSON_BIRTH");
+        String personDetails = getIntent().getStringExtra("PERSON_DETAILS");
+        String personSources = getIntent().getStringExtra("PERSON_SOURCES");
 
-        if (personText != null && personYear != null) {
+        if (personDetails != null) {
+            // Data is pre-fetched from SavedActivity
+            tvName.setText(personText);
+            tvBirth.setText("Born: " + personBirth);
+            tvDetails.setText(personDetails);
+
+            StringBuilder sourcesText = new StringBuilder("Sources:\n");
+            if (personSources != null && !personSources.isEmpty()) {
+                List<Map<String, String>> sources = new Gson().fromJson(personSources, new TypeToken<List<Map<String, String>>>(){}.getType());
+                for (Map<String, String> sourceMap : sources) {
+                    for (Map.Entry<String, String> entry : sourceMap.entrySet()) {
+                        sourcesText.append(entry.getKey()).append(". ").append(entry.getValue()).append("\n");
+                    }
+                }
+            }
+            tvSources.setText(sourcesText.toString());
+
+            btnSave.setEnabled(false); // Already saved or no need to save again
+            progressBar.setVisibility(View.GONE);
+
+        } else if (personText != null && personYear != null) {
+            // Fetch data from GeminiService
             String prompt = personText + " that was deceased in " + personYear;
             fetchBiography(prompt);
         } else {
             Toast.makeText(this, "Error: No data received.", Toast.LENGTH_SHORT).show();
+            progressBar.setVisibility(View.GONE);
         }
     }
 
     private void fetchBiography(String prompt) {
         progressBar.setVisibility(View.VISIBLE);
-        geminiService.getBio(prompt, new GeminiCallback() {
+        geminiService.generateGroundedResponse(prompt, new GeminiService.GroundedGenerationCallback() {
             @Override
-            public void onSuccess(GeminiResponse response) {
+            public void onStreamUpdate(String textChunk) {
+                // Not used for this implementation, as we wait for the full response
+            }
+
+            @Override
+            public void onComplete(GeminiService.GroundedResponse response) {
                 runOnUiThread(() -> {
                     progressBar.setVisibility(View.GONE);
-                    tvName.setText(response.getName());
-                    tvBirth.setText("Born: " + response.getBirth());
-                    tvDetails.setText(response.getDetails());
+                    tvName.setText(response.name);
+                    tvBirth.setText("Born: " + response.birth);
+                    tvDetails.setText(response.details);
 
                     StringBuilder sourcesText = new StringBuilder("Sources:\n");
-                    if (response.getSources() != null) {
-                        for (int i = 0; i < response.getSources().size(); i++) {
-                            sourcesText.append(i + 1).append(". ").append(response.getSources().get(i).values().iterator().next()).append("\n");
+                    if (response.sources != null) {
+                        for (Map<String, String> sourceMap : response.sources) {
+                            for (Map.Entry<String, String> entry : sourceMap.entrySet()) {
+                                sourcesText.append(entry.getKey()).append(". ").append(entry.getValue()).append("\n");
+                            }
                         }
                     }
                     tvSources.setText(sourcesText.toString());

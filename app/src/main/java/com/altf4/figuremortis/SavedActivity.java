@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.altf4.figuremortis.db.DatabaseHelper;
+import com.altf4.figuremortis.service.GeminiService;
+import com.google.gson.Gson;
 
 import java.util.List;
 
@@ -26,7 +28,7 @@ public class SavedActivity extends AppCompatActivity implements SavedFiguresAdap
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         db = new DatabaseHelper(this);
-        List<GeminiResponse> figures = db.getAllFigures();
+        List<GeminiService.GroundedResponse> figures = db.getAllFigures();
 
         if (figures.isEmpty()) {
             findViewById(R.id.emptyImage).setVisibility(View.VISIBLE);
@@ -38,7 +40,12 @@ public class SavedActivity extends AppCompatActivity implements SavedFiguresAdap
     }
 
     @Override
-    public void onItemClick(GeminiResponse figure) {
-        // Open detail activity with the saved data
+    public void onItemClick(GeminiService.GroundedResponse figure) {
+        Intent intent = new Intent(this, DetailActivity.class);
+        intent.putExtra("PERSON_TEXT", figure.name);
+        intent.putExtra("PERSON_BIRTH", figure.birth);
+        intent.putExtra("PERSON_DETAILS", figure.details);
+        intent.putExtra("PERSON_SOURCES", new Gson().toJson(figure.sources));
+        startActivity(intent);
     }
 }

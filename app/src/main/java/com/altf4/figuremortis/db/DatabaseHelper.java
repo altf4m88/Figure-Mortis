@@ -6,11 +6,13 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.altf4.figuremortis.GeminiResponse;
+import com.altf4.figuremortis.service.GeminiService;
+import com.altf4.figuremortis.service.GeminiService.GroundedResponse;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -49,48 +51,48 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void addFigure(GeminiResponse response, String deathYear) {
+    public void addFigure(GeminiService.GroundedResponse response, String deathYear) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(COLUMN_NAME, response.getName());
-        values.put(COLUMN_BIRTH_DATE, response.getBirth());
+        values.put(COLUMN_NAME, response.name);
+        values.put(COLUMN_BIRTH_DATE, response.birth);
         values.put(COLUMN_DEATH_YEAR, deathYear);
-        values.put(COLUMN_DETAILS, response.getDetails());
-        values.put(COLUMN_SOURCES, new Gson().toJson(response.getSources()));
+        values.put(COLUMN_DETAILS, response.details);
+        values.put(COLUMN_SOURCES, new Gson().toJson(response.sources));
         db.insert(TABLE_SAVED_FIGURES, null, values);
         db.close();
     }
 
-    public GeminiResponse getFigure(int id) {
+    public GeminiService.GroundedResponse getFigure(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(TABLE_SAVED_FIGURES, new String[]{COLUMN_ID, COLUMN_NAME, COLUMN_BIRTH_DATE, COLUMN_DEATH_YEAR, COLUMN_DETAILS, COLUMN_SOURCES},
                 COLUMN_ID + "=?", new String[]{String.valueOf(id)}, null, null, null, null);
         if (cursor != null)
             cursor.moveToFirst();
 
-        GeminiResponse response = new GeminiResponse();
-        response.setName(cursor.getString(1));
-        response.setBirth(cursor.getString(2));
-        response.setDetails(cursor.getString(4));
-        // You'll need to deserialize the sources from JSON here
+        GeminiService.GroundedResponse response = new GeminiService.GroundedResponse();
+        response.name = cursor.getString(1);
+        response.birth = cursor.getString(2);
+        response.details = cursor.getString(4);
+        response.sources = new Gson().fromJson(cursor.getString(5), new com.google.gson.reflect.TypeToken<List<Map<String, String>>>(){}.getType());
 
         cursor.close();
         return response;
     }
 
-    public List<GeminiResponse> getAllFigures() {
-        List<GeminiResponse> figureList = new ArrayList<>();
+    public List<GeminiService.GroundedResponse> getAllFigures() {
+        List<GeminiService.GroundedResponse> figureList = new ArrayList<>();
         String selectQuery = "SELECT  * FROM " + TABLE_SAVED_FIGURES;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
 
         if (cursor.moveToFirst()) {
             do {
-                GeminiResponse response = new GeminiResponse();
-                response.setName(cursor.getString(1));
-                response.setBirth(cursor.getString(2));
-                response.setDetails(cursor.getString(4));
-                // You'll need to deserialize the sources from JSON here
+                GeminiService.GroundedResponse response = new GeminiService.GroundedResponse();
+                response.name = cursor.getString(1);
+                response.birth = cursor.getString(2);
+                response.details = cursor.getString(4);
+                response.sources = new Gson().fromJson(cursor.getString(5), new com.google.gson.reflect.TypeToken<List<Map<String, String>>>(){}.getType());
                 figureList.add(response);
             } while (cursor.moveToNext());
         }
