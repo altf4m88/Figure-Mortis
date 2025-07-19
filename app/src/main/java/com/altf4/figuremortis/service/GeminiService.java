@@ -38,7 +38,7 @@ public class GeminiService {
 
     // Store the API Key securely, not hardcoded in production.
     private final String geminiApiKey;
-    private static final String MODEL_ID = "gemini-1.5-flash"; // Using a recommended model
+    private static final String MODEL_ID = "gemini-2.0-flash";
     private static final String API_METHOD = "generateContent";
     private final String BASE_URL = "https://generativelanguage.googleapis.com/v1beta/models/" + MODEL_ID;
 
@@ -231,7 +231,7 @@ public class GeminiService {
 
         // --- Tools ---
         JsonObject googleSearchTool = new JsonObject();
-        googleSearchTool.add("google_search_retrieval", new JsonObject()); // Empty object enables the tool
+        googleSearchTool.add("google_search", new JsonObject()); // Empty object enables the tool
         JsonArray tools = new JsonArray();
         tools.add(googleSearchTool);
 
