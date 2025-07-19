@@ -3,6 +3,7 @@ package com.altf4.figuremortis;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,9 +21,9 @@ import java.util.Map;
 
 public class DetailActivity extends AppCompatActivity {
 
-    private TextView tvName, tvBirth, tvDetails, tvSources;
+    private TextView tvName, tvBirth, tvDetails, tvSources, tvTitleSelected;
     private ProgressBar progressBar;
-    private Button btnSave;
+    private ImageButton btnSave;
     private GeminiService geminiService;
 
     @Override
@@ -30,6 +31,7 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
+        tvTitleSelected = findViewById(R.id.tv_title_selected);
         tvName = findViewById(R.id.tv_name);
         tvBirth = findViewById(R.id.tv_birth);
         tvDetails = findViewById(R.id.tv_details);
@@ -47,6 +49,7 @@ public class DetailActivity extends AppCompatActivity {
 
         if (personDetails != null) {
             // Data is pre-fetched from SavedActivity
+            tvTitleSelected.setText("Ah... you just selected...");
             tvName.setText(personText);
             tvBirth.setText("Born: " + personBirth);
             tvDetails.setText(personDetails);
@@ -77,11 +80,7 @@ public class DetailActivity extends AppCompatActivity {
 
     private void fetchBiography(String prompt) {
         progressBar.setVisibility(View.VISIBLE);
-        geminiService.generateGroundedResponse(prompt, new GeminiService.GroundedGenerationCallback() {
-            @Override
-            public void onStreamUpdate(String textChunk) {
-                // Not used for this implementation, as we wait for the full response
-            }
+        geminiService.generateGroundedResponse(prompt, new GeminiService.GeminiCallback() {
 
             @Override
             public void onComplete(GeminiService.GroundedResponse response) {

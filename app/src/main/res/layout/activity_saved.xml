@@ -6,6 +6,20 @@
     android:layout_height="match_parent"
     tools:context=".SavedActivity">
 
+    <TextView
+        android:id="@+id/titleTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:text="Do you have particular interest in these person?"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        style="@style/AppTheme.Title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/savedRecyclerView"
         android:layout_width="match_parent"
@@ -31,6 +45,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="No saved figures yet."
+        style="@style/AppTheme.Title"
         android:textSize="24sp"
         android:textStyle="bold"
         android:visibility="gone"

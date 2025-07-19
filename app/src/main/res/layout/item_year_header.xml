@@ -8,6 +8,7 @@
     android:paddingBottom="8dp">
 
     <TextView
+        style="@style/AppTheme.Title"
         android:id="@+id/yearTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

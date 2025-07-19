@@ -26,7 +26,35 @@
             android:orientation="vertical"
             android:padding="16dp">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    style="@style/AppTheme.Title"
+                    android:id="@+id/tv_title_selected"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Ah... you just selected..."
+                    android:textSize="18sp"
+                    android:layout_marginTop="8dp" />
+
+                <ImageButton
+                    android:id="@+id/btn_save"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Save"
+                    android:src="@android:drawable/ic_menu_save"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp" />
+            </LinearLayout>
+
             <TextView
+                style="@style/AppTheme.Title"
                 android:id="@+id/tv_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -34,12 +62,14 @@
                 android:textStyle="bold" />
 
             <TextView
+                style="@style/AppTheme.Body"
                 android:id="@+id/tv_birth"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="16sp" />
 
             <TextView
+                style="@style/AppTheme.Body"
                 android:id="@+id/tv_details"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -47,18 +77,12 @@
                 android:textSize="16sp" />
 
             <TextView
+                style="@style/AppTheme.Body"
                 android:id="@+id/tv_sources"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:textSize="14sp" />
-
-            <Button
-                android:id="@+id/btn_save"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Save" />
         </LinearLayout>
     </ScrollView>
 

@@ -46,5 +46,19 @@
         <item name="colorSurfaceContainer">@color/md_theme_surfaceContainer</item>
         <item name="colorSurfaceContainerHigh">@color/md_theme_surfaceContainerHigh</item>
         <item name="colorSurfaceContainerHighest">@color/md_theme_surfaceContainerHighest</item>
+        <item name="fontFamilyTitle">@font/cinzel</item>
+        <item name="fontFamilyBody">@font/crimson_text</item>
+    </style>
+
+    <style name="AppTheme.Title" parent="AppTheme">
+        <item name="android:fontFamily">@font/cinzel</item>
+        <item name="android:textSize">24sp</item>
+        <!-- Add other title-specific attributes here -->
+    </style>
+
+    <style name="AppTheme.Body" parent="AppTheme">
+        <item name="android:fontFamily">@font/crimson_text</item>
+        <item name="android:textSize">16sp</item>
+        <!-- Add other body-specific attributes here -->
     </style>
 </resources>
